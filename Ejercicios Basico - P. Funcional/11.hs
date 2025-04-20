@@ -8,14 +8,9 @@ Definir la función pesoPino, recibe la altura de un pino y devuelve su peso.
 Definir la función esPesoUtil, recibe un peso en kg y devuelve True si un pino de ese peso le sirve a la fábrica,
 y False en caso contrario.
 Definir la función sirvePino, recibe la altura de un pino y devuelve True si un pino de ese peso le sirve a la fábrica,
-y False en caso contrario. Usar composición en la definición. 
+y False en caso contrario. Usar composición en la definición.
 -}
-
 
 -- si es menor a 3m => 3kg * cm
 
 -- si es mayor a 3m => 3kg * 300 + (cm - 300) * 2kg
-
-
-pesoPino num = 
-
