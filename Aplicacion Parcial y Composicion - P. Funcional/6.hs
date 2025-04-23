@@ -16,3 +16,6 @@ esMultiploDe num num2 = num2 `mod` num == 0
 hola x = (== 0) x
 
 -- (==0) es una funcion, y recibe un parametro. devuelve un booleano.
+
+
+em = ((==0).(mod num2) num)
