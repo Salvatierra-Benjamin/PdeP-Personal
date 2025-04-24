@@ -3,3 +3,5 @@ sumar x y = x + y
 
 sumar5 :: Integer -> Integer
 sumar5 = sumar 5
+
+sum5 = 3.14
