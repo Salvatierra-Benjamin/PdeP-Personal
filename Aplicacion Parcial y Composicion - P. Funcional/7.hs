@@ -32,4 +32,3 @@ esBisiesto2 anio = (|| . esMultiploDe 400)  anio
 
 -- osea la disyuncion tiene que tomar dos valores, ambos booleanos
 
-|| esMultiploDe
