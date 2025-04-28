@@ -21,14 +21,12 @@ Jerarquia de operadores:
 - ($)
 -}
 
-esMultiploDe :: Integral a => a -> a -> Bool
+esMultiploDe :: (Integral a) => a -> a -> Bool
 esMultiploDe num1 num2 = num1 `mod` num2 == 0
 
-esBisiesto :: Integral a => a -> Bool
+esBisiesto :: (Integral a) => a -> Bool
 esBisiesto anio = (esMultiploDe anio 400) || (esMultiploDe anio 100)
 
-esBisiesto2 anio = (|| . esMultiploDe 400)  anio
-
+-- esBisiesto2 anio = (|| . esMultiploDe 400)  anio
 
 -- osea la disyuncion tiene que tomar dos valores, ambos booleanos
-
