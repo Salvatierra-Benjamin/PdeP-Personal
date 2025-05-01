@@ -7,4 +7,9 @@ Nota: Resolverlo utilizando la función inversa Ej. 2.3, sqrt y composición.
 
 -}
 
-inversaRaizCuadrada num = num
+mitadPro = (/ 2)
+
+inversa = (** (-1))
+
+-- si pongo 4, me deberia dar 1/2
+inversaRaizCuadrada = inversa . sqrt
