@@ -16,3 +16,14 @@ Main> cuandoHizoMasLlamadas
 “horarioNormal”
 Nota: Utilizar composición en ambos casos
 -}
+
+duracionLlamadas = (("horarioReducido", [20, 10, 25, 15]), ("horarioNormal", [10, 5, 8, 2, 9, 10]))
+
+-- tupla de tupla
+
+--  cuandoHabloMasMinutos = -- me meto a uno de los elementos de la tupla, eligo el segundo elemento,
+-- sumo todos los elementos del elemento
+
+-- cuandoHabloMasMinutos tupla =
+
+segundoItem tupla = snd (snd tupla)
