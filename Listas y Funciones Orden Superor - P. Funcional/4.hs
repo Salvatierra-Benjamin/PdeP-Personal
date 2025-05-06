@@ -17,13 +17,17 @@ Main> cuandoHizoMasLlamadas
 Nota: Utilizar composición en ambos casos
 -}
 
+--  cuandoHabloMasMinutos = -- me meto a uno de los elementos de la tupla, eligo el segundo elemento,
+-- sumo todos los elementos del elemento y comparo
+
 duracionLlamadas = (("horarioReducido", [20, 10, 25, 15]), ("horarioNormal", [10, 5, 8, 2, 9, 10]))
 
 -- tupla de tupla
 
---  cuandoHabloMasMinutos = -- me meto a uno de los elementos de la tupla, eligo el segundo elemento,
--- sumo todos los elementos del elemento
+sumaHorarioReducido tupla = sum ((snd . fst) tupla)
 
--- cuandoHabloMasMinutos tupla =
+sumaHorarioNormal tupla = sum ((snd . snd) tupla)
 
-segundoItem tupla = snd (snd tupla)
+cuandoHabloMasMinutos2 tupla
+  | sumaHorarioReducido tupla > sumaHorarioNormal tupla = (fst . fst) tupla
+  | sumaHorarioNormal tupla > sumaHorarioReducido tupla = (fst . snd) tupla
