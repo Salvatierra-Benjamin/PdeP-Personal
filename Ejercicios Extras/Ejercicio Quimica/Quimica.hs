@@ -35,13 +35,15 @@ data Grupo
 
 data Sustancia
   = Elemento String String Int Grupo
-  | Compuesto String [(Sustancia, Int)]
+  | Compuesto String [(Sustancia, Int)] Grupo
   deriving (Show, Eq)
 
 -- Construyo mi sustancia, elemento o compuesto
 hidrogeno = Elemento "Hidrogeno" "H" 1 NoMetal
 
 oxigeno = Elemento "Oxigeno" "O" 8 NoMetal
+
+hierro = Elemento "Hierro" "Fe" 26 Metal
 
 agua = Compuesto "Agua" [(hidrogeno, 2), (oxigeno, 1)]
 
@@ -61,3 +63,19 @@ esVocal 'i' = True
 esVocal 'o' = True
 esVocal 'u' = True
 esVocal _ = False
+
+------ Inciso 3 ------
+
+-- los metales cumples cualquier criterio, sea compuesto o elementos
+
+-- gases nobles -> conducen bien electricidad
+
+-- compuesto halogeno -> conduce bien calor
+
+-- el resto no conducen bien
+
+conduceBien criterio sustancia
+  | esMetal (Elemento _ _ _ Metal) && Metal == "Metal" = "conduce bien metal"
+
+esMetal (Elemento _ _ _ Metal) = True
+esMetal _ = False
