@@ -41,11 +41,17 @@ data Sustancia
 -- Construyo mi sustancia, elemento o compuesto
 hidrogeno = Elemento "Hidrogeno" "H" 1 NoMetal
 
+hidrogenoNoble = Elemento "Hidrogeno" "H" 1 GasNoble
+
 oxigeno = Elemento "Oxigeno" "O" 8 NoMetal
 
 hierro = Elemento "Hierro" "Fe" 26 Metal
 
-agua = Compuesto "Agua" [(hidrogeno, 2), (oxigeno, 1)]
+aguaMetal = Compuesto "Agua Metal" [(hidrogeno, 2), (oxigeno, 1)] Metal
+
+agua = Compuesto "Agua" [(hidrogeno, 2), (oxigeno, 1)] NoMetal
+
+aguaHalogeno = Compuesto "Agua" [(hidrogeno, 2), (oxigeno, 1)] Halogeno
 
 -- nombreDeUnion (Elemento nombre _ _ _) = sacarUltimaConsonante (nombre)
 
@@ -74,8 +80,28 @@ esVocal _ = False
 
 -- el resto no conducen bien
 
-conduceBien criterio sustancia
-  | esMetal (Elemento _ _ _ Metal) && Metal == "Metal" = "conduce bien metal"
+data Criterio
+  = Electricidad
+  | Calor
+  deriving (Show, Eq)
+
+{-conduceBien criterio sustancia
+  | criterio == Electricidad && esMetal sustancia = "conduce bien ELECTRICIDAD"
+  | criterio == Calor && (esGasNoble sustancia || esHalogeno sustancia) = "conduce bien CALOR"
+  | otherwise = "no hace nada"
+-}
+conduceBien2 Electricidad (Compuesto _ _ Metal) = "conduce bien Electricidad"
+conduceBien2 Electricidad (Elemento _ _ _ Metal) = "conduce bien Electricidad"
+conduceBien2 Calor (Elemento _ _ _ GasNoble) = "conduce bien Calor"
+conduceBien2 Calor (Compuesto _ _ Halogeno) = "conduce bien Calor"
+conduceBien2 _ _ = "no conduce Nada"
+
+esHalogeno (Compuesto _ _ Halogeno) = True
+esHalogeno _ = False
+
+esGasNoble (Elemento _ _ _ GasNoble) = True
+esGasNoble _ = False
 
 esMetal (Elemento _ _ _ Metal) = True
+esMetal (Compuesto _ _ Metal) = True
 esMetal _ = False
