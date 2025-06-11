@@ -1,4 +1,4 @@
-import Data.Char (toUpper)
+import Data.Char (isUpper, toUpper)
 import Text.Show.Functions
 
 -- Punto 1
@@ -48,7 +48,9 @@ varitaDefectuosa unBarbaro = (mapHabilidades (++ ["hacerMagia"]) . borrarObjetos
 borrarObjetos :: Objeto
 borrarObjetos unBarbado = unBarbado {objetos = [varitaDefectuosa]}
 
-pjPrueba = Barbaro "Faffy" 220 ["dormir", "comer"] []
+pjPrueba = Barbaro "Faffy" 2 ["Dormi", "comer"] []
+
+pjPrueba2 = Barbaro "Faffy2" 200 ["Dormire", "Comera"] []
 
 ardilla :: Objeto
 ardilla = id
@@ -106,7 +108,47 @@ tieneHabilidad habilidad unBarbaro = (elem habilidad . habilidades) unBarbaro
 esFuerte :: UnBarbaro -> Bool
 esFuerte unBarbaro = fuerza unBarbaro > 80
 
--- gritoDeGuerra :: Evento
--- gritoDeGuerra unBarbaro =
+gritoDeGuerra :: Evento
+gritoDeGuerra unBarbaro = cantidadDeLetrasDeHabilidades unBarbaro > poderCantidadObjetos unBarbaro
 
--- min 27
+cantidadDeLetrasDeHabilidades :: UnBarbaro -> Int
+cantidadDeLetrasDeHabilidades unBarbaro = length (concat (habilidades unBarbaro))
+
+cantidadDeLetrasDeHabilidades2 :: UnBarbaro -> Int
+cantidadDeLetrasDeHabilidades2 unBarbaro = (length . concat . habilidades) unBarbaro
+
+poderCantidadObjetos :: UnBarbaro -> Int
+poderCantidadObjetos unBarbaro = 4 * length (objetos unBarbaro)
+
+caligrafia :: Evento
+caligrafia unBarbaro = (all laHabilidadTieneAlmenos3Vocales . habilidades) unBarbaro && (all habilidadEmpiezaConMayuscula . habilidades) unBarbaro
+
+laHabilidadTieneAlmenos3Vocales :: String -> Bool
+laHabilidadTieneAlmenos3Vocales habilidad = ((length . filter esVocal) habilidad) > 3
+
+esVocal :: Char -> Bool
+esVocal 'a' = True
+esVocal 'A' = True
+esVocal 'e' = True
+esVocal 'E' = True
+esVocal 'i' = True
+esVocal 'I' = True
+esVocal 'o' = True
+esVocal 'O' = True
+esVocal 'u' = True
+esVocal 'U' = True
+esVocal _ = False
+
+habilidadEmpiezaConMayuscula :: String -> Bool
+habilidadEmpiezaConMayuscula habilidad = (isUpper . head) habilidad
+
+ritualDeFechorias :: UnBarbaro -> Bool
+ritualDeFechorias unBarbaro = saqueo unBarbaro || gritoDeGuerra unBarbaro || caligrafia unBarbaro
+
+sobrevivientes :: [UnBarbaro] -> Aventura -> [UnBarbaro]
+sobrevivientes listaBarbaros = filter concat3Pruebas listaBarbaros
+
+concat3Pruebas :: UnBarbaro -> Bool
+concat3Pruebas unBarbaro = invasionDeSuciosDuendes unBarbaro && cremalleraDelTiempo unBarbaro && ritualDeFechorias unBarbaro
+
+-- min 37
