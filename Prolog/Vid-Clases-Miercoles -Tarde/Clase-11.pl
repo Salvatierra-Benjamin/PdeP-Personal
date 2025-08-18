@@ -34,3 +34,34 @@ irremplazable(Persona):-
     not((programaEn(Alguien, Lenguaje), 
         Alguien\= Persona)). 
 
+
+
+% Casos de no inversibilidad 
+%   - hechos con variables
+%   - comparación por distinto
+%   - negación
+%   - >,>=, <,=<
+%   - is/2
+
+
+% El is asigna? 
+
+% no usar el igual (=)
+
+/*
+🔹 ¿Por qué violencia tiene aridad 2?
+Porque calcula y devuelve un valor, no solo verifica si una condición se cumple.
+
+prolog
+Copy
+Edit
+violencia(Lechuza, NivelDeViolencia)
+Se usa para relacionar una lechuza con su nivel de violencia. Por ejemplo:
+
+prolog
+Copy
+Edit
+?- violencia(hedwig, V).
+V = 171.525 .
+
+*/

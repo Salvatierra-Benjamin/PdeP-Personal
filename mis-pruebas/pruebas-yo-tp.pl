@@ -90,3 +90,44 @@ figuraDonada(toto, seis, pablito).
 % NADA
 
 
+% ----  1   ---- 
+
+% tieneFigurita     --> fue recibida por alguien    o   de un paquete.
+
+% tieneFigura(coleccionista, #figura).
+tieneFigura(Colecionista, NumeroFigura):-
+    paqueteAbierto(Colecionista,NumeroFigura,_).
+tieneFigura(Colecionista, NumeroFigura):-
+    figuraDonada(Coleccionista, NumeroFigura,_).
+
+
+% ----  2   ---- 
+
+% tieneRepetida     --> tiene cierta figura más de una vez. 
+
+% tieneRepetida(colecionista, #figura).
+tieneRepetida(Colecionista, NumeroFigura):-
+    paqueteAbierto(Colecionista, NumeroFigura, NumeroPaquete),
+    paqueteAbierto(Colecionista, NumeroFigura, OtroNumeroPaquete),
+    NumeroPaquete\=OtroNumeroPaquete.
+tieneRepetida(Colecionista, NumeroFigura):-
+    figuraDonada(Colecionista, NumeroFigura,_),
+    paqueteAbierto(Colecionista, NumeroFigura,_).
+tieneRepetida(Colecionista, NumeroFigura):-
+    figuraDonada(Colecionista, NumeroFigura, Emisor),
+    figuraDonada(Colecionista, NumeroFigura, OtroEmisor),
+    Emisor\=OtroEmisor.
+
+
+% ----  3   ---- 
+% figuraRara    --> nadie la consiguio en los dos primeros paquetes
+% figuraRara    --> menos de la mitad de colecionistas tienen la figurita ( más de la mitad (4) NO tiene la figurita), y no es repetida
+
+% figuraRara(#figura).
+figuraRara(NumeroFigura):-
+    paqueteAbierto(_,NumeroFigura,PaqueteAbierto),
+    paqueteAbierto(_,NumeroFigura,OtroPaqueteAbierto),
+    PaqueteAbierto\=primerPaquete,
+    OtroPaqueteAbierto\=segundoPaquete.
+
+figuraRara(NumeroFigura):-
