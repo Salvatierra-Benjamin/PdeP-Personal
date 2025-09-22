@@ -1,0 +1,210 @@
+import example.*
+
+//Tests de guitarra
+describe "guitarra" {
+  test "una Fender esta afinada" {
+      assert.that(fenderStratocaster.afinado())
+  } 
+
+  test "una Fender negra cuesta 15 chelines" {
+    fenderStratocaster.color("negro")
+    assert.equals(15, fenderStratocaster.costo())
+  }   
+
+
+  test "una Fender roja cuesta 10 chelines" {
+    fenderStratocaster.color("roja")
+    assert.equals(10, fenderStratocaster.costo())
+  }
+
+  test "una Fender es valiosa" {
+    assert.that(fenderStratocaster.esValioso())
+  }
+}
+
+//Tests de piano
+describe "piano" {
+  test "un piano en una habitacion 5x5 esta afinado" {
+    pianoBechstein.largoHabitacion(5)
+    pianoBechstein.anchoHabitacion(5)
+    assert.that(pianoBechstein.afinado())
+  }
+
+  test "un piano en una habitacion chica no esta afinado (20m cuadrados)" {
+       pianoBechstein.largoHabitacion(5)    
+       pianoBechstein.anchoHabitacion(4)
+       assert.that(!pianoBechstein.afinado())
+
+  }
+
+  test "el costo del piano en un 5x5 es de 10" {
+    pianoBechstein.largoHabitacion(5)
+    pianoBechstein.anchoHabitacion(5)
+    assert.equals(10, pianoBechstein.costo())
+
+  }
+
+  test "el piano es valioso en su habitacion inicial de 5x5" {
+    assert.that(pianoBechstein.esValioso())
+  }
+
+  test "el piano en una habitacion chica no es valioso" {
+    pianoBechstein.largoHabitacion(5)    
+    pianoBechstein.anchoHabitacion(4)
+    assert.that(!pianoBechstein.esValioso())
+
+  }
+
+}
+
+describe "violin" {
+  test "El violín Stagg comienza afinado (0 trémolos)" {
+    assert.that(violinStagg.afinado())
+  }
+  test "El violín con 9 trémolos todavía está afinado" {
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    assert.that(violinStagg.afinado())
+  }
+  test "El violín luego de 10 trémolos exactos, queda desafinado" {
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    assert.that(!violinStagg.afinado())
+  }
+  test "El violín tiene un costo inicial de 20 chelines (sin trémolos)" {
+    assert.equals(20, violinStagg.costo())
+  }
+    test "Con exactamente 2 trémolos, el violín tiene un costo de 18 chelines" {
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    assert.equals(18, violinStagg.costo())
+  }
+
+    test "Con 10 trémolos, el violín tiene un costo de 15 chelines (nunca baja de 15)" {
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    violinStagg.hacerTremolo()
+    assert.equals(15, violinStagg.costo())
+  }
+
+  test "Pintado con “laca acrílica”, el violín es valioso" {
+    assert.that(violinStagg.esValioso())
+  }
+    test "Pintado con “látex satinado”, el violín no es valioso" {
+      violinStagg.pintura("látex satinado")
+    assert.that(!violinStagg.esValioso())
+  }
+}
+
+//Test de músicos
+describe "musicos" {
+  test "Johann es feliz con una trompeta Jupiter (que es cara)" {
+    assert.that(johann.feliz()) // La trompeta vale 30 y johann es feliz si vale mas de 20
+  }
+  test "Johann no es feliz con un violín Stagg (sin trémolos, que no es cara)" {
+    johann.instrumento(violinStagg)
+    assert.that(!johann.feliz()) // A la hora de poner que NO es feliz, debo negarlo, ya que los test deben ser siempre verdaderos
+  }
+  test "Wolfgang es feliz si Johann tiene una trompeta Jupiter" {
+    johann.instrumento(trompetaJupiter) // Primero me aseguro que Johann tenga su trompeta
+    assert.that(wolfgang.feliz()) // luego verifico si wolfgang es feliz si Johann tiene su trompeta
+  }
+  test "Wolfgang no es feliz si Johann tiene un violín Stagg (sin trémolos)" {
+    johann.instrumento(violinStagg)
+    assert.that(!wolfgang.feliz()) //Como Johann no es feliz con un Violin Stagg, Wolfgang tampoco lo será
+  }
+  test "Giuseppe es feliz con una guitarra Fender (que está siempre afinada)" {
+    assert.that(giuseppe.feliz()) //Giuseppe inicialmente está con una Fender y la fender por defecto está afinada
+  }
+  test "Giuseppe no es feliz con un piano Bechstein en una habitación de un metro cuadrado" {
+    pianoBechstein.largoHabitacion(1)
+    pianoBechstein.anchoHabitacion(1)//Primero planteo el largo y ancho de la habitación del piano (para el área)
+    giuseppe.instrumento(pianoBechstein)//Luego Giuseppe ya recibe el piano con esas características
+    assert.that(!giuseppe.feliz())//Evalúo que NO es feliz con ese piano
+  }
+  test "Maddalena con el violín Stagg sin trémolos es feliz (costo 20, es par)" {
+    assert.that(maddalena.feliz())//Maddalena por defecto tiene un violín stagg, que vale 20 y no tiene trémolos
+  }
+  test "Maddalena con el violín Stagg con un trémolo no es feliz (costo 19, es impar)" {
+    violinStagg.hacerTremolo() //#Pensamiento: creo que en un futuro tal vez nos convendría hacer el hacerTremolo(Cantidad) pasandole la cantidad de veces por parametro
+    assert.that(!maddalena.feliz()) //HacerTremolo hizo que disminuyera en uno su costo, haciendolo impar
+  }
+  test "Si tenemos una asociación donde están Johann con un violín Stagg, Wolfgang, Giuseppe con su guitarra Fender original y Maddalena con su violín Stagg original, los músicos felices deben ser Giuseppe y Maddalena
+" {
+    johann.instrumento(violinStagg) // utilizo el setter de instrumento
+    //Wolgang no se modifica
+    //Giuseppe por defecto tiene una fender
+    //Maddalena por defecto tiene un violin
+    asociacionMusical.musicos(#{johann,wolfgang,giuseppe,maddalena}) //Planteo mi set de músicos a tener en cuenta
+    assert.that(asociacionMusical.musicosFelices()== #{giuseppe,maddalena}) //Comparo si los felices efectivamente son giuseppe y maddalena
+  }
+}
+
+//Observaciones en relación a los tests:
+ //Puedo ver que a la hora de asignar valores, quedan dentro del contexto del test y luego vuelven a estar por defecto.
+
+
+
+
+describe "trompeta"{
+  test "Una trompeta Júpiter a una temporatura amabiente de 20 grados está afinada"{
+    trompetaJupiter.afinarTrompeta(20)
+    assert.that(trompetaJupiter.estaAfinado()) // esta dentro de la temperatura ideal
+  }
+
+  test"Una trompeta Júpiter a una temporatura amabiente de 25 grados está afinada"{
+    trompetaJupiter.afinarTrompeta(25)
+    assert.that(trompetaJupiter.estaAfinado()) // esta dentro de la temperatura ideal
+  }
+
+// para que quiero afinarTrompeta si siempre va a terminar afinada, no me sirve para 
+// el test
+
+// test de 19 grados
+
+// test de 26 grados
+
+
+  test"Una trompeta Júpiter a una temporatura amabiente de 19 grados está afinada"{
+    trompetaJupiter.afinarTrompeta(19)
+    assert.that(trompetaJupiter.estaAfinado()) // es soplada
+  }
+
+
+
+  test "La trompeta cuesta sin sordina 30 chelines"{
+    trompetaJupiter.sacarSordina()
+    assert.equals(30, trompetaJupiter.costo())
+  }
+
+  test "La trompeta cuesta con sordina 35 chelines"{
+    assert.equals(35, trompetaJupiter.costo())
+  }
+
+  test"La trompeta no es valiosa"{
+    assert.that(!trompetaJupiter.esValioso())
+  }
+
+}
