@@ -70,16 +70,7 @@ conflictoDeInteres(Persona, OtraPersona):-
 %! HORRIBLEEE. No se aprovecha el polimorfismo
 % drogasQueVendio(Preso, Drogas):-
 %     prisionero(Preso, narcotrafico([Drogas])).
-
-% peligroso(Preso):-
-%     prisionero(Preso, homicidio(_)).
-
-% peligroso(Preso):-
-%     prisionero(Preso,_),
-%     drogasQueVendio(Preso, Drogas),
-%     member(metanfetaminas, Drogas).
-
-% peligroso(Preso):-
+l% peligroso(Preso):-
 %     prisionero(Preso, _),
 %     drogasQueVendio(Preso, Drogas),
 %     length(Drogas, cantDrogas),
@@ -200,3 +191,20 @@ capo(Capo):-
     prisionero(Capo,_),
     not(controla(_, Capo)),
     forall((esPersona(Persona), Persona \= Capo), controlaDirectamenteOIndirectamente(Capo, Persona)).
+
+
+asdnasdjkbajsbdajkbsd asdasdaSdAsdadas
+as
+d
+asd
+asd
+a
+sda
+sd
+asd
+as
+das
+
+asda
+sdas
+d
