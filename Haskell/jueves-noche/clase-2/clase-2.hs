@@ -136,10 +136,10 @@ esMuchoMayor n m = n - m > 10
 -- !! No tipa
 -- funcionRara n m = esMuchoMayor n (not m)
 
--- c.
+-- -- c.
 
--- f :: Bool -> [Char] -> Bool
-f :: Bool -> String -> Bool --Siempre que tipe, siempre que 'y' respete
-f x y = g (h y (i x y) x ) y 
-f False " " = True
+-- -- f :: Bool -> [Char] -> Bool
+-- f :: Bool -> String -> Bool --Siempre que tipe, siempre que 'y' respete
+-- f x y = g (h y (i x y) x ) y 
+-- f False " " = True
 
