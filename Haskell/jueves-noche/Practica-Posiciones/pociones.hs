@@ -1,4 +1,3 @@
-import qualified Data.ByteString.Char8 as 3
 data Persona = Persona {
   nombrePersona :: String,
   suerte :: Int,
