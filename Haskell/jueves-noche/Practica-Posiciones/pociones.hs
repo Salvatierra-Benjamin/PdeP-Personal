@@ -32,6 +32,9 @@ maximoSegun  f ( x : y : xs)
 
 
 --  1. 
+niveles :: Persona -> [Int]
+niveles persona = [fuerza persona , suerte persona , inteligencia persona]
+
 --  Dada una persona definir las siguientes funciones para cuantificar sus 
 --  niveles de suerte, inteligencia y fuerza sin repetir código:
 
@@ -39,6 +42,50 @@ maximoSegun  f ( x : y : xs)
 --  1.b  diferenciaDeNiveles es la diferencia entre el nivel más alto y más bajo.
 --  1.c  nivelesMayoresA n, que indica la cantidad de niveles de la persona que están por encima del valor dado.
 
+--  1.a 
+-- Persona {nombrePersona = "pepe", suerte = 2, inteligencia = 3, fuerza = 4}
+sumaDeNiveles :: Persona -> Int
+-- sumaDeNiveles persona = inteligencia persona + fuerza persona + suerte persona 
+-- sumaDeNiveles persona = (sum . niveles) persona
+sumaDeNiveles = sum . niveles
 
--- 1.a 
-sumaDeNiveles :: 
+--  1.b 
+diferenciaDeNiveles :: Persona -> Int
+diferenciaDeNiveles persona = maximoNivel persona - minimoNivel persona
+
+maximoNivel = maximum . niveles
+minimoNivel = minimum .niveles
+
+
+-- 1.c 
+-- nivelesMayoresA :: Persona -> Int -> Int
+nivelesMayoresA :: Int -> (Persona -> Int)
+
+-- nivelesMayoresA n persona = (length . filter (>n) . niveles) persona 
+nivelesMayoresA n  = length . filter (>n) . niveles
+
+
+-- ?--------------------------------------------------------
+--  2.
+--  Definir la función efectosDePocion que dada una poción devuelve una lista con los
+--  efectos de todos sus ingredientes.
+-- pocion = [[nombreINgredinte, efecto1] , [otroIngrediente, efecto2] , [otroIngrediente, efecto3]]
+
+efectosDePocion :: Pocion -> [Efecto] 
+-- efectosDePocion pocion = (map . take 2) pocion
+efectosDePocion = concat . map efectos . ingredientes 
+-- efectosDePocion pocion = (concat . map efectos . ingredientes) pocion 
+
+-- map :: (a -> b) -> [a] -> [b]
+
+
+
+-- ? ----------------------------------------
+--  3.
+--  Dada una lista de pociones, consultar:
+--    a. Los nombres de las pociones hardcore, que son las que tienen al menos 4
+--  efectos.
+--    b. La cantidad de pociones prohibidas,  que  son  aquellas  que  tienen  algún
+--  ingrediente cuyo nombre figura en la lista de ingredientes prohibidos.
+--    c. Si son todas dulces, lo cual ocurre cuando todas las pociones de la lista
+-- tienen algún ingrediente llamado “azúcar”
