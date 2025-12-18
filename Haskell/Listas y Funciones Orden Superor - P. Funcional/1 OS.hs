@@ -17,4 +17,4 @@ porque even -3 es negativo
 
 tuplaEjemplo = (1,2,3)
 
-existsAny fBool tupla = 
+-- existsAny fBool tupla = 
