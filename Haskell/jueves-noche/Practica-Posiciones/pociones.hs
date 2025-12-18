@@ -1,3 +1,4 @@
+import qualified Data.ByteString.Char8 as 3
 data Persona = Persona {
   nombrePersona :: String,
   suerte :: Int,
@@ -89,3 +90,9 @@ efectosDePocion = concat . map efectos . ingredientes
 --  ingrediente cuyo nombre figura en la lista de ingredientes prohibidos.
 --    c. Si son todas dulces, lo cual ocurre cuando todas las pociones de la lista
 -- tienen algún ingrediente llamado “azúcar”
+
+
+--  3.a 
+pocionesHardcore :: [Pocion] -> [String]
+
+pocionesHardcore pociones = (map (nombrePocion) . filter ( (>= 4) . length . efectosDePocion )) pociones
