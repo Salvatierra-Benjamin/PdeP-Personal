@@ -95,3 +95,70 @@ efectosDePocion = concat . map efectos . ingredientes
 pocionesHardcore :: [Pocion] -> [String]
 
 pocionesHardcore pociones = (map (nombrePocion) . filter ( (>= 4) . length . efectosDePocion )) pociones
+
+--  3.b 
+
+-- nombresDeIngredientesProhibidos = [
+--  "sangre de unicornio",
+--  "veneno de basilisco"]
+
+cantPocionesProhibidas :: [Pocion] -> Int
+cantPocionesProhibidas  = length . filter esProhibida 
+
+esProhibida :: Pocion -> Bool
+esProhibida  = any (flip elem nombresDeIngredientesProhibidos . nombreIngrediente) . ingredientes -- pocion
+-- ! ANY ES EL QUE SE ENCARGA DE RECORRER 
+-- any :: (a -> Bool) -> [a] -> Bool -- [a] seria ingredientes
+-- y (a -> Bool es el elem)
+
+
+
+--    c. Si son todas dulces, lo cual ocurre cuando todas las pociones de la lista
+-- tienen algún ingrediente llamado “azúcar”
+
+sonTodasDulces :: [Pocion] -> Bool
+sonTodasDulces pociones = all (any ( ("azucar" == ). nombreIngrediente) . ingredientes)  pociones
+-- all :: (a->Bool) -> [a] -> Bool
+-- ! Aca recorre dos veces, una por el all y otra pore el any
+
+
+-- ? --------------------------------------------------------------------
+
+--  4
+--  Definir la función tomarPocion que recibe una poción y una persona, 
+--  y devuelve como quedaría la persona después de tomar la poción. Cuando 
+--  una persona toma una poción, se aplican todos los efectos de esta última, en orden.
+-- ! ES IMPORTANTE QUE NOS GUSTE EL FOLD
+tomarPocion :: Pocion -> Persona -> Persona
+tomarPocion pocion  personaInicial =  
+  ( foldl (\persona efecto -> efecto persona ) personaInicial . efectosDePocion) pocion
+
+-- ? --------------------------------------------------------------------
+
+--  5.
+--  Definir la función esAntidotoDe que recibe dos pociones y una persona, y dice si
+--  tomar  la  segunda  poción  revierte  los  cambios  que  se  producen  en  la  persona  al
+--  tomar la primera.
+
+
+esAntidotoDe :: Pocion -> Pocion -> Persona -> Bool
+
+esAntidotoDe pocion antidoto persona = 
+  ( (== persona) . tomarPocion antidoto .  tomarPocion pocion ) persona
+
+
+
+-- ? --------------------------------------------------------------------
+
+--  6.
+--  Definir  la  función  personaMasAfectada  que  recibe  una  poción,  una  función
+--  cuantificadora (es decir, una función que dada una persona retorna un número) y
+--  una lista de personas, y devuelve a la persona de la lista que hace máxima el valor
+--  del cuantificador. Mostrar un ejemplo de uso utilizando los cuantificadores definidos
+--  en el punto 1.
+
+
+-- maximoSegun
+personaMasAfectada :: Pocion -> (Persona -> Int) -> ([Persona] -> Persona)
+
+personaMasAfectada pocion criterio = maximoSegun ( criterio . tomarPocion pocion)

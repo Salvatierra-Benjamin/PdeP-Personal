@@ -1,0 +1,73 @@
+-- Estrategias de evaluacion
+
+siguiente :: Int -> Int
+siguiente n = n + 1
+
+cuadrado :: Int -> Int 
+cuadrado n = n * n 
+
+-- ESTO NO HACE HASKELL!!!!!!
+-- cuadrado (siguiente 3)
+-- cuadrado ( 3 + 1)
+-- cuadrado ( 4 )
+-- 4 * 4
+-- 16               <-------- !Evaluacion Anciosa
+
+
+-- LO QUE SI HACE HASKELL !!!!
+-- cuadrado (siguiente 3)
+-- siguiente 3 * siguiente 3
+-- (3 + 1) * (3 + 1)
+-- 4 * 4 
+-- 16               <-------- !Evaluacion Perezosa / lazy
+
+
+-- * Ambas evaluaciones, en caso de encontrar un resultado,
+-- * seran las mismas. 
+-- * Pero puede suceder que una Evaluacion Perezosa encuentre valores 
+-- * que una Evaluacion Anciosa no lo haga
+
+
+
+const :: a -> b -> a
+const x _ = x 
+
+loop :: a 
+loop = loop -- > esto se va para siempre es infinito
+
+-- > si hago 
+-- const 42 loop 
+-- Me respondera 42, porque no necesita evaluar el loop
+
+
+-- > si hago 
+-- head [42, loop , 7 `div` 0]
+-- 42 
+-- No le interesa saber lo demás
+
+
+-- > si hago 
+-- 3 < 7 || loop
+-- True                 <---- !No le importa la otra parte, es más loop nisiquiera es un Bool
+
+
+
+
+enterosDesde :: Int -> [Int]
+enterosDesde n = n : enterosDesde (n + 1 )
+enterosDesde n = [ n..]
+-- > (head . enterosDesde) 5
+-- 5
+
+
+primerosNPrimos :: Int -> [Int]
+primerosNPrimos n = (take n . filter primo . enterosDesde) [1 ..]
+
+paresMayoresA :: Int -> [Int]
+paresDesde n 
+    | even n    = [ n , n+2]
+    | otherwise = [ n+1 , n+3]
+
+
+
+-- ! FALTA LA PRACTICA DE ESTO
