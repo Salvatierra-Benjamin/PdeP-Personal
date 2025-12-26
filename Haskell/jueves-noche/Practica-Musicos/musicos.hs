@@ -25,4 +25,4 @@ masde500 =  any ((>500) . cantidad) . actuaciones
 
 
 actuacionesEnUnAnio :: Musico -> Int
-actuacionesEnUnAnio = 
+actuacionesEnUnAnio =  fecha . actuaciones 
