@@ -42,8 +42,8 @@ espadas peso = modificarFuerza (+ 2*peso)
 amuletosMisticos :: String -> Barbaro -> Barbaro 
 amuletosMisticos habilidad = agregarHabilidad habilidad --Se podria sacar habilidad para que sea point free
 -- amuletosMisticos habilidad = modificarHabilidades (++ [habilidad]) -- (++) :: [String] -> [String] -> [String]
--- *IMPORTANTE EXPLICACION DEL MODIFICARHABILIDADES
 
+-- *IMPORTANTE EXPLICACION DEL MODIFICARHABILIDADES
 {-
 * (++) :: [String] -> [String] -> [String]
 * Al ya aplicarle un [habilidad], me queda [String] -> [String] por ende ya calza con el tipo de 
