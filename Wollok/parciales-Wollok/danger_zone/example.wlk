@@ -1,4 +1,3 @@
-// todos tienen habilidades
 // incapacitado => salud esta debjo de la salud crítica
 
 

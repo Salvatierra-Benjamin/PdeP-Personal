@@ -1,6 +1,6 @@
 import Data.Char (toUpper)
-import qualified Control.Applicative as B
-
+-- RESOLUCION EN VIDEO DE TIERRA DE BARBAROS - HASKELL
+-- https://drive.google.com/drive/folders/1AfNARmbRC3ODY-jYcFqzBqn9shs4QMRU
 
 type Nombre = String
 type Fuerza = Int

@@ -17,7 +17,6 @@ object pepita {
 // Con el super hacemos que entienda el metodo, pero que además haga algo más
 
 
-habria que modelar los usuarios que tienen cupones? 
 
 
 // Con la herencia, no puedo modificar el nivel de un objeto. Puede que tenga delegar en un objeto diferente al nivel para 
