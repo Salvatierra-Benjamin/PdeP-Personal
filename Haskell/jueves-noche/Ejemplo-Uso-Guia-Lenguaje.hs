@@ -1,4 +1,8 @@
 ($) :: (a->b) -> a -> b
+$ :: (a -> b) -> a -> b
+f $ g $ h x  =  f (g (h x))
+peso funcionX elementoY = funcionX elementoY
+
 (.) :: (b->c) -> (a->b) -> (a->c)
 flip :: (a->b->c) -> b -> a -> c
 
