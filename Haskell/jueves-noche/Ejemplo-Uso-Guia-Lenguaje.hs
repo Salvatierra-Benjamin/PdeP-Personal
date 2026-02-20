@@ -147,3 +147,16 @@ ghci> (-) 2 3
 -1
 ghci> flip (-) 2 3
 1
+
+
+
+-- TIPOS DE FOLD
+
+ghci> :t foldr
+foldr :: Foldable t => (a -> b -> b) -> b -> t a -> b
+
+ghci> :t foldl
+foldl :: Foldable t => (b -> a -> b) -> b -> t a -> b
+
+ghci> :t foldl1
+foldl1 :: Foldable t => (a -> a -> a) -> t a -> a
