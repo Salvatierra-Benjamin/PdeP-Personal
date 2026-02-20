@@ -18,6 +18,7 @@ data Jugador = Jugador
     posicion :: Posicion,
     registro :: [RegistroPartido]
   }
+  deriving (Show)
 
 type Equipo = [Jugador]
 
@@ -27,11 +28,11 @@ type Equipo = [Jugador]
 -- ? a la funcion principal, sino se complicara hacer todo de una y en una sola linea.
 
 cuantosMinutosJugaron :: Int -> Equipo -> [String]
-cuantosMinutosJugaron minutos equipo = ((map nombre) . filter (any ((> minutos) . snd) . registro)) equipo
+cuantosMinutosJugaron minutos equipo = ((map nombre) . filter (all (((<=) minutos) . snd) . registro)) equipo
 
--- ?Verifica que algun partido haya jugado almenos ESO minutos
--- cumpleMinutosJugados :: Int -> Jugador -> Bool
--- cumpleMinutosJugados minutos jugador = (any ((> minutos) . fst) . registro) jugador
+-- ?Verifica que en todos los partidos que jugo, que haya jugado mas de N minutos
+-- jugaronTodosLosPartidosMasDeNMinutos :: Int -> Jugador -> Bool
+-- jugaronTodosLosPartidosMasDeNMinutos n jugador = (all (((<=) n) . snd) . registro) jugador
 
 empiezaConLetra :: Char -> Equipo -> Bool
 empiezaConLetra letra equipo = (any ((== letra) . head . nombre)) equipo
@@ -54,14 +55,20 @@ modificadorNombre :: (String -> String) -> Jugador -> Jugador
 modificadorNombre modificador jugador = jugador {nombre = (modificador . nombre) jugador}
 
 bielsa :: Entrenador
-bielsa = modificadorHabilidad (10 -) . modificadorVelocidad ((flip div 2) . (* 3))
+bielsa jugador = (modificadorHabilidad (flip (-) 10) . modificadorVelocidad (mitadEnEntero)) jugador
+
+mitadEnEntero :: Int -> Int
+mitadEnEntero numero = ((flip div 2) . (* 3)) numero
 
 -- Queria multiplicar por 1.5 pero me lo deja en fraccion, asi que utilizo
 -- 3/2, multiplico por 3 y despues divido entre 2
 -- !Anotar el orden de div, para saber si tengo que usar flip
 
 menotti :: Int -> Entrenador
-menotti habilidadAgregada = modificadorHabilidad (+ habilidadAgregada) . modificadorNombre ((++) "Mr. ")
+menotti habilidadAgregada personaje = (modificadorHabilidad (+ habilidadAgregada) . modificadorNombre ((++) "Mr. ")) personaje
+
+-- ghci> (++) "hola" "chau"
+-- "holachau"
 
 bertolitti :: Entrenador
 bertolitti = menotti 10
@@ -69,33 +76,35 @@ bertolitti = menotti 10
 vanGaal :: Entrenador
 vanGaal = id
 
-{-
--- ?Uso en consola:
-
+-- ?Ejemplo de uso
+registroMontielFinal :: (Goles, MinutosJugados)
 registroMontielFinal = (2, 90)
 
-montiel = Jugador "Montiel" 40 30 "Delantero"  [registroMontielFinal]
+montiel :: Jugador
+montiel = Jugador "Montiel" 40 30 "Delantero" [registroMontielFinal]
 
+{-
+-- ?Uso en consola:
 (vanGaal . (menotti 30) . bielsa) montiel
-
 -}
 
 -- * Punto 3
-
-esBueno :: Jugador -> Bool
-esBueno jugador = ((>) (velocidad jugador) . habilidad) jugador || ((== "Volante") . posicion) jugador
-
--- esBueno jugador = ((>) (habilidad jugador)  . velocidad)jugador
--- esBueno jugador = ( (== "Volante"). posicion)jugador
-
-cuantosJugadoresBuenos :: Equipo -> Int
-cuantosJugadoresBuenos equipo = (length . filter esBueno) equipo
 
 mejora :: Entrenador -> Equipo -> Bool
 mejora entrenador equipo = ((<) (cuantosJugadoresBuenos equipo) . cuantosJugadoresBuenos . map entrenador) equipo
 
 -- "cuantosJugadoresBuenos equipo" es el equipo antes de que haya sido entreado,
 -- que es comparado con el mismo equipo pero despues de haber sido entrenado que viene de la composición
+
+cuantosJugadoresBuenos :: Equipo -> Int
+cuantosJugadoresBuenos equipo = (length . filter esBueno) equipo
+
+esBueno :: Jugador -> Bool
+esBueno jugador = ((<) (velocidad jugador) . habilidad) jugador || ((== "volante") . posicion) jugador
+
+-- !Esto de abajo NO HACER
+-- esBueno jugador = ((>) (habilidad jugador)  . velocidad)jugador
+-- esBueno jugador = ( (== "Volante"). posicion)jugador
 
 -- * Punto 4
 
