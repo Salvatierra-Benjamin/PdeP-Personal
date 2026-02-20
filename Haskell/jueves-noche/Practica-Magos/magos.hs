@@ -14,7 +14,7 @@ modificadorHechizos :: ([Hechizo] -> [Hechizo]) -> Mago -> Mago
 modificadorHechizos modificador mago = mago {hechizos = (modificador . hechizos) mago}
 
 curar :: Int -> Hechizo
-curar cantidadCurada = modificadorSalud ((+) cantidadCurada)
+curar cantidadCurada mago = modificadorSalud ((+) cantidadCurada) mago
 
 lanzarRayo :: Hechizo
 lanzarRayo mago
@@ -28,7 +28,10 @@ amnesia :: Int -> Hechizo
 amnesia cantidadOlvidados = modificadorHechizos (drop cantidadOlvidados)
 
 confundir :: Mago -> Mago
-confundir mago = (head (hechizos mago)) mago
+confundir mago = (primerHechizo mago) mago
+
+primerHechizo :: Mago -> Hechizo
+primerHechizo mago = (head . hechizos) mago
 
 -- * Punto 2
 
@@ -38,11 +41,15 @@ poder mago = ((+) (salud mago) . (*) (edad mago) . cantidadHechizos) mago
 cantidadHechizos :: Mago -> Int
 cantidadHechizos = length . hechizos
 
--- danio :: Mago -> Hechizo -> Int
--- danio mago hechizo = (flip (-) (salud mago) . salud . hechizo) mago
+danio :: Mago -> Hechizo -> Int
+danio mago hechizo = ((-) (salud mago) . salud . hechizo) mago
+
+-- saludVieja - saludNueva
 
 diferenciaDePoder :: Mago -> Mago -> Int
-diferenciaDePoder unMago otroMago = (abs . flip (-) (poder unMago) . poder) otroMago
+diferenciaDePoder unMago otroMago = (abs . (-) (poder unMago) . poder) otroMago
+
+-- No necesito el flip porque despues se le aplica el absoluto
 
 -- * Punto 3
 
@@ -52,7 +59,7 @@ data Academia = Academia
   }
 
 nombreRincenWind :: Academia -> Bool
-nombreRincenWind academia = (any nombreRincenwindSinHechizos . magos) academia
+nombreRincenWind academia = ((any nombreRincenwindSinHechizos) . magos) academia
 
 nombreRincenwindSinHechizos :: Mago -> Bool
 nombreRincenwindSinHechizos mago = ((&&) (noTieneHechizos mago) . tieneNombreRincenWind) mago
@@ -73,7 +80,7 @@ esNionio :: Mago -> Bool
 esNionio mago = ((<) (salud mago) . cantidadHechizos) mago
 
 cantidadQueNoPasarian :: Academia -> Int
-cantidadQueNoPasarian academia = (length . filter (not . examenDeIngreso academia) . magos) academia
+cantidadQueNoPasarian academia = (length . filter (not . (examenDeIngreso academia)) . magos) academia
 
 sumaEdadesMagosConMuchozHechizos :: Academia -> Int
 sumaEdadesMagosConMuchozHechizos academia = (sum . map edad . filter tiene10HechizosOMas . magos) academia
@@ -85,18 +92,25 @@ tiene10HechizosOMas = ((<) 10 . length . hechizos)
 
 -- Retorna la diferencia de salud si sufre un hechizo
 -- salud - danioInfringido
-danio :: Mago -> Hechizo -> Int
-danio mago hechizo = ((-) (salud mago) . salud . hechizo) mago
+-- ?copia comentada del punto 2b
+-- danio :: Mago -> Hechizo -> Int
+-- danio mago hechizo = ((-) (salud mago) . salud . hechizo) mago
 
--- (-) saludIicial - saludModificada
+-- (-) saludIicial  saludModificada
+-- saludIicial - saludModificada
 
 maximoSegun criterio valor comparables = foldl1 (mayorSegun $ criterio valor) comparables
 
--- ?Con foldl1 la semilla esta dentro de la lista
+-- foldl1 :: Foldable t => (a -> a -> a) -> t a -> a
+-- ?Con foldl1 la semilla esta dentro de la lista, recibe el primer y segundo elemento de la lista,
+-- ?y lo pasa a la funcion reductora.
+-- ?mayorSegun queda (danio mago1) (hehizo1) (hechizo2)
+-- ? (danio mago1) :: Hechizo -> Int
 
--- ?Con mejorHechizoContra el parentesis de foldl1 quedaria (mayorSegun . danio) mago1
+-- ?Con mejorHechizoContra el primer argumento del foldl1 quedaria ((mayorSegun . danio) mago1)
 -- ?al aplicar parcialmente "danio mago1", queda del tipo Hechizo -> Int.
--- ?Esta funcion "Hechizo -> Int" es pasada al mayorSegun y hace las comparaciones.
+-- ?Esta funcion "Hechizo -> Int" es pasada al mayorSegun y hace las comparaciones
+-- ?con el primer hechizo y segundo de la lista.
 
 mayorSegun evaluador comparable1 comparable2
   | evaluador comparable1 >= evaluador comparable2 = comparable1
