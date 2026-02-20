@@ -65,7 +65,8 @@ ghci> [1,2] ++ [2,3,4]
 [1,2,2,3,4]
 ghci> "Ho" ++ "la!"
 "Hola!"
-
+ghci> (++) "hola" "chau" 
+"holachau"
 
 -- EL (concat) RECIBE UNA LISTA DE LISTAS y devuelve una unica lista
 ghci> :t concat

@@ -35,18 +35,18 @@ modificadorStress modificador persona = persona {stress = (modificador . stress)
 modificadorAmigues :: (Int -> Int) -> Persona -> Persona
 modificadorAmigues modificador persona = persona {cantidadAmigues = (modificador . cantidadAmigues) persona}
 
-disminuirMitadStress :: Persona -> Persona
-disminuirMitadStress persona = modificadorStress (div 2) persona
-
 villaGesell :: Int -> Persona -> Persona
 villaGesell mes persona
   | mes == 1 || mes == 2 = modificadorStress (+ 10) persona
   | otherwise = disminuirMitadStress persona
 
+disminuirMitadStress :: Persona -> Persona
+disminuirMitadStress persona = modificadorStress (flip div 2) persona
+
 lasToninas :: Bool -> Persona -> Persona
 lasToninas plata persona
   | plata = disminuirMitadStress persona
-  | otherwise = modificadorStress (* (10 * cantidadAmigues persona)) persona
+  | otherwise = modificadorStress (+ (10 * cantidadAmigues persona)) persona
 
 puertoMadryn :: Persona -> Persona
 puertoMadryn = modificadorAmigues (+ 1)
@@ -54,7 +54,8 @@ puertoMadryn = modificadorAmigues (+ 1)
 laAdela :: Persona -> Persona
 laAdela = id
 
--- a)
+-- * a)
+
 type PlanTuristico = (Persona -> Persona)
 
 planesPiola :: [PlanTuristico] -> Persona -> Bool
