@@ -1,0 +1,58 @@
+Músicos - 2025 - Parcial Funcional
+Necesitamos modelar requerimientos para una importante personalidad del ámbito musical, que nos 
+contó que un músico tiene un nombre, el grado de experiencia (un número que va de 1 a 10), su 
+instrumento favorito y por último el historial de actuaciones que consiste en una lista con la 
+fecha (día, mes y año) y la cantidad de público que asistió.
+
+Punto 1: Informer
+Restricción: En este punto no puede utilizar funciones auxiliares, solo composición y aplicación 
+parcial. No puede utilizar recursividad.
+
+a. Queremos saber si un músico tuvo actuaciones donde hubo más de 5.000 asistentes.
+
+b. Queremos saber cuántas actuaciones tuvo un músico en un año en particular.
+
+Punto 2: Radioactivity
+Existen varias actividades que pueden hacer los músicos:
+
+Tocar un instrumento: le cambia el instrumento favorito al músico y además le suma 1 a su 
+experiencia si el instrumento es "oboe", "fagot" o "cello".
+
+Cantar: no cambia el instrumento principal pero le agrega como prefijo "Lalala" al nombre 
+porque lo pone contento.
+
+Hacer una presentación: le agrega una presentación al historial del músico para una fecha 
+y un público, obviamente al final de esa lista. Eso le suma 1 a su experiencia y, si el 
+músico toca el "oboe", el "fagot" o el "cello", suma 1 punto más de experiencia.
+
+Pensar: es una actividad muy importante, pero que no produce cambios en el músico.
+
+
+
+Punto 3: Mucha experiencia
+Queremos saber cuánta experiencia le hace ganar a un músico una lista de actividades.
+
+Por ejemplo: tocar el oboe, cantar y hacer una presentación para 500 personas debería 
+darle 3 puntos extra de experiencia a los que ya tenía el músico.
+
+Restricción: En este punto no puede utilizar recursividad.
+
+
+
+
+Punto 4: Obsesionario en la mayor
+Queremos saber si un músico tiene presentaciones correctas, esto significa que la 
+cantidad de público en las presentaciones que están en la posición impar es impar, 
+y la cantidad de público en las presentaciones que están en la posición par son pares.
+
+Algunos ejemplos:
+
+sin presentaciones, el músico tiene presentaciones correctas.
+
+si la secuencia de presentaciones es 501, 2000, 755 el músico tiene presentaciones correctas.
+
+si la secuencia de presentaciones es 501, 2000, 755, 1000 el músico tiene presentaciones correctas.
+
+si la secuencia de presentaciones es 501, 2001, 755 el músico no tiene presentaciones correctas.
+
+Restricción: En este punto debe utilizar recursividad.
