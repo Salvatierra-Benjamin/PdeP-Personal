@@ -35,10 +35,15 @@ volumenAlto :: Int -> Nota -> Bool
 volumenAlto volumenAlto nota = ((<) volumenAlto . volumen) nota
 
 frecuenciaMayor :: Int -> Nota -> Bool
-frecuenciaMayor frecuencia = (> frecuencia) . tono
+-- frecuenciaMayor frecuencia = (> frecuencia) . tono
+frecuenciaMayor frecuencia = ((<) frecuencia) . tono
+
+-- 20 < frecuenciaNota
 
 frecuenciaMenor :: Int -> Nota -> Bool
-frecuenciaMenor frecuencia = (< frecuencia) . tono
+frecuenciaMenor frecuencia = ((>) frecuencia) . tono
+
+-- 2000 < frecuenciaNota
 
 esMolesta :: Nota -> Bool
 esMolesta nota = (tonoMenor250VolumenMayor85 nota || tonoMayor250VolumenMenor55 nota) && (not . esAudible) nota
@@ -52,7 +57,7 @@ tonoMayor250VolumenMenor55 nota = ((&& frecuenciaMayor 250 nota) . volumenAlto 5
 -- * Punto 2
 
 silencioTotal :: Cancion -> Int
-silencioTotal = sum . map duracion . filter (not . esAudible)
+silencioTotal cancion = (sum . map duracion . filter (not . esAudible)) cancion
 
 sinInterrupciones :: Cancion -> Bool
 sinInterrupciones cancion = (all (duracionMayor (div 10 1)) . filter esAudible) cancion
@@ -61,7 +66,7 @@ duracionMayor :: Int -> Nota -> Bool
 duracionMayor tiempo nota = ((> tiempo) . duracion) nota
 
 peorMomento :: Cancion -> Int
-peorMomento = maximum . map volumen . filter (esMolesta)
+peorMomento cancion = (maximum . map volumen . filter (esMolesta)) cancion
 
 -- * Punto 3
 
@@ -69,14 +74,14 @@ type Filtro = Cancion -> Cancion
 
 trasponer :: Int -> Cancion -> Cancion
 -- trasponer escalar cancion = (map (trasponerUnaNota escalar)) cancion
-trasponer escalar = map (cambiarTono (escalar *))
+trasponer escalar cancion = (map (cambiarTono ((*) escalar))) cancion
 
 -- trasponerUnaNota :: Int -> Nota -> Nota
 -- trasponerUnaNota escalar nota = cambiarTono (2*escalar* )nota
 
 --
 acotarVolumen :: Int -> Int -> Cancion -> Cancion
-acotarVolumen volumenMaximo volumenMinimo = map (modificarAVolumenMinimo volumenMinimo . modificarAVolumenMaximo volumenMaximo)
+acotarVolumen volumenMaximo volumenMinimo cancion = (map (modificarAVolumenMinimo volumenMinimo . modificarAVolumenMaximo volumenMaximo)) cancion
 
 -- acotarVolumen volumenMaximo volumenMinimo = map (modificarAVolumenMinimo volumenMinimo) . map (modificarAVolumenMaximo volumenMaximo)
 
@@ -85,22 +90,22 @@ setearVolumenNota nuevoVolumen nota = cambiarVolumen (\_ -> nuevoVolumen) nota
 
 modificarAVolumenMaximo :: Int -> Nota -> Nota
 modificarAVolumenMaximo volumenMaximo nota
-  | ((> volumenMaximo) . volumen) nota = setearVolumenNota volumenMaximo nota
+  | (((<) volumenMaximo) . volumen) nota = setearVolumenNota volumenMaximo nota
   | otherwise = nota
 
 modificarAVolumenMinimo :: Int -> Nota -> Nota
 modificarAVolumenMinimo volumenMinimo nota
-  | ((< volumenMinimo) . volumen) nota = setearVolumenNota volumenMinimo nota
+  | (((>) volumenMinimo) . volumen) nota = setearVolumenNota volumenMinimo nota
   | otherwise = nota
 
 normalizar :: Cancion -> Cancion
-normalizar cancion = (modificarVolumenCancion cancion . promedioCancion) cancion
+normalizar cancion = (setearVolumenCancion cancion . promedioCancion) cancion
 
-modificarVolumenCancion :: Cancion -> Int -> Cancion
-modificarVolumenCancion cancion nuevoVolumen = map (setearVolumenNota nuevoVolumen) cancion
+setearVolumenCancion :: Cancion -> Int -> Cancion
+setearVolumenCancion cancion nuevoVolumen = map (setearVolumenNota nuevoVolumen) cancion
 
 promedioCancion :: Cancion -> Int
-promedioCancion = promedio . map volumen
+promedioCancion cancion = (promedio . map volumen) cancion
 
 -- * Punto 4
 
@@ -153,7 +158,8 @@ Expone bien lo que hace.
 -- * Punto 5
 
 tunear :: [Filtro] -> Cancion -> Cancion
-tunear filtros cancion = (normalizar . foldr ($) cancion) filtros
+-- tunear filtros cancion = (normalizar . foldr ($) cancion) filtros
+tunear filtros cancion = (normalizar . foldl (\cancion filtro -> filtro cancion) cancion) filtros
 
 -- foldr :: (a -> b -> b) -> b -> [a] -> b
 -- ($) :: (a -> b) -> a -> b
