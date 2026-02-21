@@ -51,6 +51,9 @@ esCondimento condimento = elem condimento condimentos
 caloriasIngrediente :: String -> Int
 caloriasIngrediente ingrediente = (snd . head . filter (tieneElIngrediente ingrediente)) informacionNutricional
 
+-- Filter te trae una lista de un solo elemnto, para traer el elemento (la tupla),
+-- hacer head, ya con la tupla, haces snd para traerte las calorias
+
 tieneElIngrediente :: String -> (String, Int) -> Bool
 tieneElIngrediente cadena (otraCadena, _) = cadena == otraCadena
 
@@ -59,11 +62,7 @@ tieneElIngrediente cadena (otraCadena, _) = cadena == otraCadena
 -- Considero que el light :: Bool de bebida representa si es dietetica
 esMortal :: Combo -> Bool
 esMortal combo =
-  ( (&&) (acompaniamientoNoEsEnsalada combo)
-      . noEsDietetica
-  )
-    combo
-    || esUnaBomba combo
+  ((&&) (acompaniamientoNoEsEnsalada combo) . noEsDietetica) combo || esUnaBomba combo
 
 esUnaBomba :: Combo -> Bool
 esUnaBomba combo = ((||) (algunIngredienteMayorA300 combo) . caloriasMayorA1000) combo
